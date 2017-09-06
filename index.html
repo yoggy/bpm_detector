@@ -1,3 +1,11 @@
+<!--
+  index.html - https://github.com/yoggy/bpm_detector
+  
+  license:
+      Copyright (c) 2017 yoggy <yoggy0@gmail.com>
+      Released under the MIT license
+      http://opensource.org/licenses/mit-license.php;
+-->
 <html>
     <head>
         <meta charset="utf-8">
@@ -10,11 +18,20 @@
             <div class="row">
                 <div class="col">
                     <h2>BPM detctor</h2>
-                    <button class="btn btn-primary" id="button">Tap!</button> → <span id="bpm_text">0</span> bpm
-                    
+
+                    <!-- ここがbpm.jsで定義しているbpm_componentコンポーネント -->
+                    <div id="bpm_component">
+                        <!-- 一般的なformだとv-on:clickを使用するが、楽器みたいに押した瞬間に動作してほしい場合はv-on:mousedownを使う -->
+                        <button class="btn btn-primary" v-on:mousedown="on_beat()">Tap!</button>
+                        →
+                        <!-- コンポーネントの中では、bpm_componentコンポーネントで定義されているmethods, dataを使うことができる -->
+                        <span>{{bpm}}</span> bpm                    
+                    </div>
+                    <!-- ここまで -->
                 </div>
             </div>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        </div>
+        <script src="https://unpkg.com/vue"></script>
         <script src="bpm.js"></script>
     </body>
 </html>

@@ -1,9 +1,45 @@
 //
-// bpm.js - https://github.com/yoggy/bpm_detector 
+// bpm.js - https://github.com/yoggy/bpm_detector
 //
+// license:
+//     Copyright (c) 2017 yoggy <yoggy0@gmail.com>
+//     Released under the MIT license
+//     http://opensource.org/licenses/mit-license.php;
+//
+
+// index.htmlの<div id="bpm_component">に対応するコンポーネント定義
+var bpm_component = new Vue({
+    el: '#bpm_component',
+    data: {
+        bpm : 0
+    },
+    methods: {
+        on_beat : function () {
+            console.log("on_beat()");
+
+            var t = new Date().getTime(); // millisecons since 1970/1/1
+            push_time(t);
+            this.bpm = calc_bpm();
+        }
+    },
+    // 1.0ではreadyだったが、2.0からmountedという名称に変更されているので注意 https://jp.vuejs.org/v2/guide/migration.html#ready-置き換え
+    mounted: function() {
+        var _this = this;
+        window.addEventListener('keydown', function(event) {
+            // スペースキーを押したとき
+            if (event.keyCode == 0x20) { 
+                _this.on_beat();
+            }
+        });
+    }
+});
+
+/////////////////////////////////////////////////////////////////////////
+// 以後、bpm計算用
+
 var ts = [];
 
-function calc_bpm() {
+function calc_bpm () {
     if (ts.length < 2) return 0;
 
     var count = ts.length - 1;
@@ -19,28 +55,9 @@ function calc_bpm() {
     return bpm;
 }
 
-function push_time(t) {
+function push_time (t) {
     ts.push(t);
     if (ts.length > 8) {
         ts.shift();
     }
 }
-
-function on_beat() {
-    var t = new Date().getTime(); // millisecons since 1970/1/1
-    push_time(t);
-    var bpm = calc_bpm();
-
-    $("#bpm_text").text(bpm);
-}
-
-function init() {
-    $("body").mousedown(on_beat); // don't use click()...
-    $("body").keydown(function(e){
-        if(e.keyCode == 0x20){
-            on_beat();
-        }
-    });
-}
-$(document).ready(init);
-
