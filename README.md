@@ -1,6 +1,6 @@
 bpm_detector
 ====
-![img01.png](img01.png)
+![img01.gif](img01.gif)
 
 Copyright and license
 ----
